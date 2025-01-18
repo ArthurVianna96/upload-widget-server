@@ -30,16 +30,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: npm/action-setup@v4
-        name: Install npm
-        with:
-          run_install: false
-
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "npm"
 
-      - run: npm install --frozen-lockfile
+      - run: npm ci
       - run: npm run test

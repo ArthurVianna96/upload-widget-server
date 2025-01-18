@@ -49,8 +49,6 @@ describe('export uploads', () => {
 			.split('\n')
 			.map(row => row.split(','))
 
-		console.log(csvAsArray)
-
 		expect(isSuccess(sut)).toBe(true)
 		expect(unwrapEither(sut)).toEqual({
 			reportUrl: 'https://storage.com/file.csv',
