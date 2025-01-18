@@ -1,19 +1,14 @@
 import { getUploads } from '@/app/functions/get-uploads'
-import { uploadImage } from '@/app/functions/upload-image'
-import { db } from '@/infra/db'
-import { schema } from '@/infra/db/schemas'
-import { isErr, isSuccess, unwrapEither } from '@/shared/either'
+import { unwrapEither } from '@/shared/either'
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
-
-const MAX_FILE_SIZE = 1024 * 1024 * 2 // 1kb * 1kb * 2 = 2mb
 
 export const getUploadsRoute: FastifyPluginAsyncZod = async server => {
 	server.get(
 		'/uploads',
 		{
 			schema: {
-				summary: 'Upload an image',
+				summary: 'Get uploads',
 				tags: ['uploads'],
 				querystring: z.object({
 					searchQuery: z.string().optional(),
