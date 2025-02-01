@@ -24,3 +24,13 @@ jobs:
       - name: AWS ECR login
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push Docker image
+        id: build-push-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+        run: |
+          docker build -t upload-widget-server:v3 .
+          docker tag upload-widget-server:v3 $ECR_REGISTRY/$ECR_REPOSITORY:v3
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:v3
