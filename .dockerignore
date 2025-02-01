@@ -1,0 +1,8 @@
+node_modules
+.env
+Dockerfile
+docker-compose.yml
+biome.json
+.vscode
+.github
+dist
