@@ -22,7 +22,9 @@ RUN npm run build
 RUN npm prune --prod
 
 # use distroless as minimal base image to package the app
-FROM gcr.io/distroless/nodejs22-debian12 AS release
+# FROM gcr.io/distroless/nodejs22-debian12 AS release
+
+FROM node:22-alpine AS release
 
 # set non-root user
 USER 1000 
@@ -32,7 +34,10 @@ WORKDIR /app
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/package*.json ./package.json
+COPY --from=build /app/drizzle.config.ts ./drizzle.config.ts
+COPY --from=build /app/tsconfig.json ./tsconfig.json
+COPY . .
 
 EXPOSE 3333
 
-CMD ["dist/infra/http/server.js"]
+CMD ["npm", "run", "start"]
