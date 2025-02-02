@@ -22,6 +22,6 @@ services:
       - CLOUDFLARE_ACCOUNT_ID=a8a05f818cb9315c9e48cd4a9ecb52a7
       - CLOUDFLARE_ACCESS_KEY_ID=c8db3f97f15f1922eb92f8fb4de1b2a0
       - CLOUDFLARE_SECRET_ACCESS_KEY=e2bfc76cae31798eb70343ea6c9b64c56e8e7f4ee1861bc589fa5f08cd9e09e1
-      - CLOUDFLARE_BUCKET="upload-server"
-      - CLOUDLARE_PUBLIC_URL="https://pub-e0f33a4dc1ae4534803785aace9b7de8.r2.dev"
-      - DATABASE_URL="postgresql://docker:docker@localhost:5432/upload"
+      - CLOUDFLARE_BUCKET=upload-server
+      - CLOUDLARE_PUBLIC_URL=https://pub-e0f33a4dc1ae4534803785aace9b7de8.r2.dev
+      - DATABASE_URL=postgresql://docker:docker@localhost:5432/upload

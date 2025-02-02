@@ -33,8 +33,6 @@ COPY --from=build /app/dist ./dist
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/package*.json ./package.json
 
-ENV PORT=3333
-
 EXPOSE 3333
 
 CMD ["dist/infra/http/server.js"]
