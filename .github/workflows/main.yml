@@ -59,3 +59,24 @@ jobs:
           IMAGE_TAG: ${{ steps.generate-tag.outputs.sha }}
         run: |
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: Deploy to AWS App runner
+        id: deploy
+        uses: awslabs/aws-app-runner-deploy@main
+        with:
+          name: widget-server-manual
+          region: ${{ vars.AWS_REGION }}
+          cpu: 1
+          memory: 2
+          source: container
+          image: ${{ steps.login-ecr.outputs.registry }}/${{ vars.ECR_REPOSITORY }}:${{ steps.generate-tag.outputs.sha }}
+          port: 3333
+          environment: |
+            PORT=3333
+            NODE_ENV=production
+            CLOUDFLARE_ACCOUNT_ID=$CLOUDFLARE_ACCOUNT_ID
+            CLOUDFLARE_ACCESS_KEY_ID=$CLOUDFLARE_ACCESS_KEY_ID
+            CLOUDFLARE_SECRET_ACCESS_KEY=$CLOUDFLARE_SECRET_ACCESS_KEY
+            CLOUDFLARE_BUCKET=$CLOUDFLARE_BUCKET
+            CLOUDLARE_PUBLIC_URL=$CLOUDLARE_PUBLIC_URL
+            DATABASE_URL=$DATABASE_URL
