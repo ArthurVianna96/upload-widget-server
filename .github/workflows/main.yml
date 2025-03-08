@@ -64,7 +64,7 @@ jobs:
         id: deploy
         uses: awslabs/amazon-app-runner-deploy@main
         with:
-          name: widget-server-manual
+          service: widget-server-manual
           region: ${{ vars.AWS_REGION }}
           cpu: 1
           memory: 2
