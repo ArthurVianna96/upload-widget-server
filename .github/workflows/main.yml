@@ -62,7 +62,7 @@ jobs:
 
       - name: Deploy to AWS App runner
         id: deploy
-        uses: awslabs/aws-app-runner-deploy@main
+        uses: awslabs/amazon-app-runner-deploy@main
         with:
           name: widget-server-manual
           region: ${{ vars.AWS_REGION }}
