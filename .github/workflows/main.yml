@@ -72,7 +72,7 @@ jobs:
           image: ${{ steps.login-ecr.outputs.registry }}/${{ vars.ECR_REPOSITORY }}:${{ steps.generate-tag.outputs.sha }}
           port: 3333
           access-role-arn: ${{ secrets.AWS_ACCESS_ROLE_ARN }}
-          wait-for-service-stability-seconds: 180
+          wait-for-service-stability: true
 
       - name: App Runner Check
         run: echo "App Runner deployed successfully ${${ steps.deploy-app-runner.outputs.service_url }}"
