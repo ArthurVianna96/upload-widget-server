@@ -7,7 +7,7 @@ export const healthCheckRoute: FastifyPluginAsyncZod = async server => {
 		{
 			schema: {
 				summary: 'Health Check',
-				tags: ['healt-check'],
+				tags: ['health-check'],
 				response: {
 					200: z.object({
 						message: z.string(),
@@ -16,7 +16,7 @@ export const healthCheckRoute: FastifyPluginAsyncZod = async server => {
 			},
 		},
 		async (request, reply) => {
-			return reply.status(200).send({ message: 'OK!' })
+			return reply.status(200).send({ message: 'App running' })
 		}
 	)
 }

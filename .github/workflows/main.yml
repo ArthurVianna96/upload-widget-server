@@ -61,16 +61,18 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Deploy to AWS App runner
-        id: deploy
+        id: deploy-app-runner
         uses: awslabs/amazon-app-runner-deploy@main
         with:
-          service: widget-server-manual
+          service: ${{ vars.APP_RUNNER_SERVICE_NAME }}
           region: ${{ vars.AWS_REGION }}
           cpu: 1
           memory: 2
           source: container
           image: ${{ steps.login-ecr.outputs.registry }}/${{ vars.ECR_REPOSITORY }}:${{ steps.generate-tag.outputs.sha }}
           port: 3333
+          access-role-arn: ${{ secrets.AWS_ACCESS_ROLE_ARN }}
+          wait-for-service-stability-seconds: 180
           environment: |
             PORT=3333
             NODE_ENV=production
@@ -80,3 +82,6 @@ jobs:
             CLOUDFLARE_BUCKET=$CLOUDFLARE_BUCKET
             CLOUDLARE_PUBLIC_URL=$CLOUDLARE_PUBLIC_URL
             DATABASE_URL=$DATABASE_URL
+
+      - name: App Runner Check
+        run: echo "App Runner deployed successfully ${${ steps.deploy-app-runner.outputs.service_url }}"
