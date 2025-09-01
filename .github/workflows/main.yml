@@ -75,4 +75,4 @@ jobs:
           wait-for-service-stability: true
 
       - name: App Runner Check
-        run: echo "App Runner deployed successfully ${${ steps.deploy-app-runner.outputs.service_url }}"
+        run: echo "App Runner deployed successfully ${{ steps.deploy-app-runner.outputs.service_url }}"
