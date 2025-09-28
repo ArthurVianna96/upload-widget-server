@@ -60,19 +60,36 @@ jobs:
         run: |
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-      - name: Deploy to AWS App runner
-        id: deploy-app-runner
-        uses: awslabs/amazon-app-runner-deploy@main
+      - name: Render task definition
+        id: render-task-definition
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          service: ${{ vars.APP_RUNNER_SERVICE_NAME }}
-          region: ${{ vars.AWS_REGION }}
-          cpu: 1
-          memory: 2
-          source: container
+          task-definition: .aws/task-definition.json
+          container-name: widget-server
           image: ${{ steps.login-ecr.outputs.registry }}/${{ vars.ECR_REPOSITORY }}:${{ steps.generate-tag.outputs.sha }}
-          port: 3333
-          access-role-arn: ${{ secrets.AWS_ACCESS_ROLE_ARN }}
+
+      - name: Deploy to AWS ECS
+        id: deploy-amazon-ecs
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.render-task-definition.outputs.task-definition }}
+          service: widget-server
+          cluster: rocketseat-ecs
           wait-for-service-stability: true
 
-      - name: App Runner Check
-        run: echo "App Runner deployed successfully ${{ steps.deploy-app-runner.outputs.service_url }}"
+      # - name: Deploy to AWS App runner
+      #   id: deploy-app-runner
+      #   uses: awslabs/amazon-app-runner-deploy@main
+      #   with:
+      #     service: ${{ vars.APP_RUNNER_SERVICE_NAME }}
+      #     region: ${{ vars.AWS_REGION }}
+      #     cpu: 1
+      #     memory: 2
+      #     source: container
+      #     image: ${{ steps.login-ecr.outputs.registry }}/${{ vars.ECR_REPOSITORY }}:${{ steps.generate-tag.outputs.sha }}
+      #     port: 3333
+      #     access-role-arn: ${{ secrets.AWS_ACCESS_ROLE_ARN }}
+      #     wait-for-service-stability: true
+
+      # - name: App Runner Check
+      #   run: echo "App Runner deployed successfully ${{ steps.deploy-app-runner.outputs.service_url }}"
